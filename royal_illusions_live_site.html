@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Royal Illusions</title>
+  <style>
+    :root {
+      --bg: #050505;
+      --panel: rgba(255,255,255,0.05);
+      --gold: #d4af37;
+      --gold-soft: #f0d77b;
+      --text: #f5f5f5;
+      --muted: #b3b3b3;
+      --line: rgba(212,175,55,0.24);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(212,175,55,0.18), transparent 28%),
+        linear-gradient(180deg, #070707 0%, #000 100%);
+      color: var(--text);
+    }
+    a { color: inherit; text-decoration: none; }
+    .wrap { width: min(1180px, calc(100% - 32px)); margin: 0 auto; }
+    .nav {
+      position: sticky; top: 0; z-index: 20;
+      backdrop-filter: blur(12px);
+      background: rgba(0,0,0,0.72);
+      border-bottom: 1px solid var(--line);
+    }
+    .nav-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 0;
+    }
+    .brand { display: flex; align-items: center; gap: 12px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; }
+    .brand-mark {
+      width: 40px; height: 40px; border-radius: 12px;
+      background: linear-gradient(135deg, var(--gold-soft), var(--gold));
+      color: #000; display: grid; place-items: center; font-weight: 900;
+      box-shadow: 0 10px 30px rgba(212,175,55,0.2);
+    }
+    .nav-links { display: flex; gap: 20px; color: var(--muted); font-size: 14px; }
+    .hero {
+      padding: 72px 0 32px;
+    }
+    .hero-grid {
+      display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 36px; align-items: center;
+    }
+    .eyebrow {
+      display: inline-block; padding: 8px 14px; border: 1px solid var(--line); border-radius: 999px;
+      color: var(--gold-soft); font-size: 12px; letter-spacing: 0.2em; text-transform: uppercase; background: rgba(212,175,55,0.08);
+    }
+    h1 {
+      margin: 18px 0 14px; font-size: clamp(48px, 8vw, 90px); line-height: 0.95; text-transform: uppercase;
+      letter-spacing: -0.04em;
+    }
+    .hero p {
+      color: var(--muted); font-size: 18px; line-height: 1.7; max-width: 620px;
+    }
+    .cta-row { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 28px; }
+    .btn {
+      padding: 15px 22px; border-radius: 16px; font-weight: 800; border: 1px solid transparent;
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
+      display: inline-flex; align-items: center; gap: 10px;
+    }
+    .btn:hover { transform: translateY(-1px); }
+    .btn-primary { background: linear-gradient(135deg, var(--gold-soft), var(--gold)); color: #000; }
+    .btn-secondary { border-color: var(--line); color: #fff; background: rgba(255,255,255,0.03); }
+    .hero-card {
+      position: relative; border: 1px solid var(--line); border-radius: 30px; overflow: hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      box-shadow: 0 24px 80px rgba(0,0,0,0.5);
+    }
+    .hero-card img { width: 100%; display: block; aspect-ratio: 1 / 1; object-fit: cover; }
+    .hero-badge {
+      position: absolute; right: 18px; bottom: 18px; background: rgba(0,0,0,0.78); border: 1px solid var(--line);
+      border-radius: 18px; padding: 12px 14px; color: var(--gold-soft); font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase;
+    }
+    .stats {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 28px;
+    }
+    .stat {
+      border: 1px solid rgba(255,255,255,0.08); background: var(--panel); border-radius: 24px; padding: 20px;
+    }
+    .stat strong { display: block; font-size: 30px; color: var(--gold-soft); margin-bottom: 6px; }
+    .section { padding: 36px 0; }
+    .section-title { font-size: clamp(30px, 5vw, 48px); margin: 0 0 12px; text-transform: uppercase; }
+    .section-copy { color: var(--muted); max-width: 740px; line-height: 1.7; }
+    .cards {
+      margin-top: 24px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+    }
+    .card {
+      border: 1px solid rgba(255,255,255,0.08); background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      border-radius: 28px; overflow: hidden;
+    }
+    .card-media {
+      height: 180px;
+      background: linear-gradient(135deg, rgba(212,175,55,0.25), rgba(255,255,255,0.05));
+      display: grid; place-items: center; font-size: 52px;
+    }
+    .card-body { padding: 22px; }
+    .card h3 { margin: 0 0 10px; font-size: 22px; }
+    .card p { margin: 0; color: var(--muted); line-height: 1.7; }
+    .split {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 22px; margin-top: 28px;
+    }
+    .panel {
+      border: 1px solid var(--line); background: rgba(255,255,255,0.03); border-radius: 30px; padding: 28px;
+    }
+    .list { margin: 18px 0 0; padding: 0; list-style: none; display: grid; gap: 12px; }
+    .list li {
+      padding: 14px 16px; border-radius: 18px; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.06);
+      color: #e7e7e7;
+    }
+    form { display: grid; gap: 14px; margin-top: 18px; }
+    input, textarea {
+      width: 100%; border: 1px solid rgba(255,255,255,0.1); background: rgba(0,0,0,0.56); color: #fff;
+      border-radius: 18px; padding: 15px 16px; font: inherit;
+    }
+    textarea { min-height: 140px; resize: vertical; }
+    .footer {
+      padding: 28px 0 50px; color: var(--muted); text-align: center; font-size: 14px;
+    }
+    @media (max-width: 920px) {
+      .hero-grid, .split, .cards, .stats { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .hero { padding-top: 42px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="wrap nav-inner">
+      <div class="brand">
+        <div class="brand-mark">RI</div>
+        <div>Royal Illusions</div>
+      </div>
+      <div class="nav-links">
+        <a href="#builds">Builds</a>
+        <a href="#services">Services</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">Dominican street style • JDM inspired</span>
+        <h1>Royal Illusions</h1>
+        <p>
+          A bold automotive landing page built around your silver Evo artwork, premium black-and-gold styling,
+          and a fast layout you can open right now.
+        </p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#builds">See the builds</a>
+          <a class="btn btn-secondary" href="#contact">Book a custom project</a>
+        </div>
+        <div class="stats">
+          <div class="stat"><strong>JDM</strong><span>Inspired performance styling</span></div>
+          <div class="stat"><strong>DR</strong><span>Dominican roots and street energy</span></div>
+          <div class="stat"><strong>24/7</strong><span>Ready for portfolio and brand use</span></div>
+        </div>
+      </div>
+      <div class="hero-card">
+        <img src="./ChatGPT Image Mar 19, 2026, 12_01_58 PM.png" alt="Royal Illusions silver Evo logo art" />
+        <div class="hero-badge">Silver Evo • Crown logo</div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section id="builds" class="section">
+      <div class="wrap">
+        <h2 class="section-title">Featured Style</h2>
+        <p class="section-copy">
+          This first version gives you a clean home page that feels like a real brand site instead of just an image drop.
+          It is set up for car showcases, future inventory, booking, and merch or parts sections.
+        </p>
+        <div class="cards">
+          <article class="card">
+            <div class="card-media">🏁</div>
+            <div class="card-body">
+              <h3>Street Presence</h3>
+              <p>Sharp typography, dark contrast, and gold accents to give the brand a polished tuner-shop feel.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-media">👑</div>
+            <div class="card-body">
+              <h3>Royal Identity</h3>
+              <p>Your crown mark and logo treatment are pushed into the hero section so the brand is instantly recognizable.</p>
+            </div>
+          </article>
+          <article class="card">
+            <div class="card-media">🚗</div>
+            <div class="card-body">
+              <h3>Built for Growth</h3>
+              <p>You can expand this into inventory pages, gallery sections, booking forms, or a full online store later.</p>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="services" class="section">
+      <div class="wrap split">
+        <div class="panel">
+          <h2 class="section-title" style="font-size: 34px;">What this site can become</h2>
+          <ul class="list">
+            <li>Custom car builds and project gallery</li>
+            <li>Inventory and parts listings</li>
+            <li>Booking page for installs and consultations</li>
+            <li>Merch, decals, and apparel shop</li>
+          </ul>
+        </div>
+        <div id="contact" class="panel">
+          <h2 class="section-title" style="font-size: 34px;">Contact</h2>
+          <p class="section-copy">This form is ready as a visual section now and can be wired to email, Formspree, or your backend next.</p>
+          <form>
+            <input placeholder="Name" />
+            <input placeholder="Email" />
+            <textarea placeholder="Tell Royal Illusions what you want built"></textarea>
+            <a class="btn btn-primary" href="mailto:hello@royalillusions.com">Send inquiry</a>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="wrap">Royal Illusions © 2026 • Silver Evo concept site</div>
+  </footer>
+</body>
+</html>
